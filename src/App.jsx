@@ -1,15 +1,19 @@
-import { Routes, Route } from "react-router-dom";
-import Auth from "./pages/Auth";
-import "react-toastify/dist/ReactToastify.css";
-import Todo from "./pages/Todo";
+import { Routes, Route } from "react-router-dom"
+import "react-toastify/dist/ReactToastify.css"
+import { lazy, Suspense } from "react"
+
+const Auth = lazy(() => import("./pages/Auth"))
+const Todo = lazy(() => import("./pages/Todo"))
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Auth />} />
-      <Route path="/todo" element={<Todo />} />
-    </Routes>
-  );
+    <Suspense fallback={<div>...loading</div>}>
+      <Routes>
+        <Route path="/" element={<Auth />} />
+        <Route path="/todo" element={<Todo />} />
+      </Routes>
+    </Suspense>
+  )
 }
 
-export default App;
+export default App

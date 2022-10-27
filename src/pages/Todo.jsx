@@ -2,18 +2,22 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { getTodoApi } from "../api/todo"
-import TodoCreate from "../component/todo/TodoCreate"
-import TodoHeader from "../component/todo/TodoHeader"
-import TodoList from "../component/todo/TodoList"
+import TodoCreate from "../components/todo/TodoCreate"
+import TodoHeader from "../components/todo/TodoHeader"
+import TodoList from "../components/todo/TodoList"
+import { TOKEN_STORAGE_KEY } from "../constants/storage"
 import { mainContainer } from "../shared/globalStyle"
+import { getItem } from "../utils/storage"
+
+import TodoContextWrapper from "../context/TodoContext"
 
 const Todo = () => {
   const navigate = useNavigate()
   const [todoData, setTodoData] = useState()
 
   useEffect(() => {
-    if (!localStorage.getItem("access_token")) {
-      navigate("/")
+    if (!getItem(TOKEN_STORAGE_KEY)) {
+      return navigate("/")
     }
     const getData = () => {
       getTodoApi()
@@ -30,8 +34,10 @@ const Todo = () => {
   return (
     <div css={mainContainer}>
       <TodoHeader />
-      <TodoCreate todoData={todoData} setTodoData={setTodoData} />
-      <TodoList todoData={todoData} setTodoData={setTodoData} />
+      <TodoContextWrapper>
+        <TodoCreate todoData={todoData} setTodoData={setTodoData} />
+        <TodoList todoData={todoData} setTodoData={setTodoData} />
+      </TodoContextWrapper>
     </div>
   )
 }

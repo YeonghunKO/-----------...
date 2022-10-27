@@ -1,15 +1,17 @@
 /** @jsxImportSource @emotion/react */
-import { useNavigate } from "react-router";
-import { css } from "@emotion/react";
-import { ToastContainer } from "react-toastify";
-import { loginApi } from "../../api/auth";
-import notice from "../../utils/noticeUtils";
-import useSignForm from "../../hooks/useSignForm";
-import * as authSytle from "./authStyle";
-import { COLOR } from "../../shared/style";
+import { useNavigate } from "react-router"
+import { css } from "@emotion/react"
+import { ToastContainer } from "react-toastify"
+import { loginApi } from "../../api/auth"
+import notice from "../../utils/noticeUtils"
+import useSignForm from "../../hooks/useSignForm"
+import * as authSytle from "./authStyle"
+import { COLOR } from "../../shared/style"
+import { setItem } from "../../utils/storage"
+import { TOKEN_STORAGE_KEY } from "../../constants/storage"
 
 const Login = ({ isShown, onOpen }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const {
     userInfo,
     handleInputValue,
@@ -17,19 +19,19 @@ const Login = ({ isShown, onOpen }) => {
     emailWarnList,
     passwordIsAbled,
     passwordWarnList,
-  } = useSignForm();
+  } = useSignForm()
 
   const handleLoginClick = () => {
     loginApi(userInfo.email, userInfo.password)
       .then((res) => {
-        notice("success", "로그인 성공");
-        localStorage.setItem("access_token", res.data.access_token);
-        navigate("/todo");
+        notice("success", "로그인 성공")
+        setItem(TOKEN_STORAGE_KEY, res.data.access_token)
+        navigate("/todo")
       })
       .catch((err) => {
-        notice("error", err.response.data.message);
-      });
-  };
+        notice("error", err.response.data.message)
+      })
+  }
 
   return (
     <>
@@ -71,9 +73,7 @@ const Login = ({ isShown, onOpen }) => {
           disabled={!emailIsAbled || !passwordIsAbled}
           css={css`
             ${authSytle.buttonCss}
-            background-color: ${!emailIsAbled || !passwordIsAbled
-              ? "gray"
-              : `${COLOR.Purple200}`};
+            background-color: ${!emailIsAbled || !passwordIsAbled ? "gray" : `${COLOR.Purple200}`};
           `}
         >
           Login
@@ -81,25 +81,25 @@ const Login = ({ isShown, onOpen }) => {
       </form>
       <ToastContainer position="top-right" />
     </>
-  );
-};
+  )
+}
 
 const loginContainer = css`
   height: 460px;
   background: ${COLOR.White100};
   border-radius: 60% / 10%;
   transition: 0.8s ease-in-out;
-`;
+`
 
 const labelCss = css`
   ${authSytle.labelCss}
   color: ${COLOR.Purple200};
   padding-top: 15px;
-`;
+`
 
 const errorWrapper = css`
   ${authSytle.errorWrapper}
   color: ${COLOR.Purple200};
-`;
+`
 
-export default Login;
+export default Login
