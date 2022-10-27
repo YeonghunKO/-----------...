@@ -15,7 +15,8 @@ const useValidatedPassword = () => {
         fn: new RegExp("(?=.{8,})"),
       },
     }
-    for (const [key, value] of Object.entries(regaxForValAuth)) {
+    // eslint-disable-next-line no-unused-vars
+    for (const [_key, value] of Object.entries(regaxForValAuth)) {
       if (!value.fn.test(password)) {
         warnList.push(value.warnText)
       }

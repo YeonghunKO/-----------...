@@ -13,8 +13,8 @@
   "rules": {
     "no-var": "error",
     "react/react-in-jsx-scope": "off",
-    "no-unused-vars": "off",
     "no-console": ["error", { "allow": ["warn", "log"] }],
-    "prefer-regex-literals": "off"
+    "prefer-regex-literals": "off",
+    "curly": "error"
   }
 }

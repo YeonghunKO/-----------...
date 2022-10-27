@@ -9,14 +9,14 @@ const useValidatedEmail = () => {
       return setEmailIsAbled(false)
     }
 
-    const foo = "foo"
     const regaxForValAuth = {
       moreThanEightLength: {
         warnText: "이메일에는 @가 포함되어야 합니다.",
         fn: new RegExp("@"),
       },
     }
-    for (const [key, value] of Object.entries(regaxForValAuth)) {
+    // eslint-disable-next-line no-unused-vars
+    for (const [_key, value] of Object.entries(regaxForValAuth)) {
       if (!value.fn.test(email)) {
         warnList.push(value.warnText)
       }
