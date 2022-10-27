@@ -12,14 +12,11 @@ const todoReducer = (state, action) => {
           userId: action.userId,
         },
       ]
-    case "TOGGLE":
-      return state.map((task) =>
-        task.id === action.id ? { ...task, isCompleted: !task.isCompleted } : task
-      )
-    case "REMOVE":
+
+    case "DELETE":
       return state.filter((task) => task.id !== action.id)
     case "EDIT":
-      return state.map((task) => (task.id === action.id ? { ...task, todo: action.todo } : task))
+      return state.map((task) => (task.id === action.todo.id ? { ...action.todo } : task))
     default:
       return state
   }

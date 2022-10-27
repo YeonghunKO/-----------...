@@ -1,37 +1,67 @@
 /** @jsxImportSource @emotion/react */
-import { memo, useCallback, useState } from "react";
-import { css } from "@emotion/react";
-import { MdDone } from "react-icons/md";
-import { ToastContainer } from "react-toastify";
-import notice from "../../utils/noticeUtils";
-import { COLOR } from "../../shared/style";
+import { memo, useCallback, useContext, useState } from "react"
+import { css } from "@emotion/react"
+import { MdDone } from "react-icons/md"
+import { ToastContainer } from "react-toastify"
+import notice from "../../utils/noticeUtils"
+import { COLOR } from "../../shared/style"
+import { dispatchContext } from "../../context/TodoContext"
+import { deleteTodoApi, updateTodoApi } from "../../api/todo"
 
-const TodoItem = ({ list, handleTodoUpdate, handleTodoDelete }) => {
-  const [modifyTogle, setModifyTogle] = useState(false);
-  const [content, setContent] = useState(list);
+const TodoItem = ({ list }) => {
+  const [modifyTogle, setModifyTogle] = useState(false)
+  const [content, setContent] = useState(list)
+
+  const dispatch = useContext(dispatchContext)
+
+  const handleTodoUpdate = useCallback(
+    (content) => {
+      updateTodoApi(content.id, content.todo, content.isCompleted)
+        .then(() => {
+          dispatch({ type: "EDIT", todo: content })
+        })
+        .catch((err) => {
+          console.log("주 에러 : ", err)
+        })
+    },
+    [list]
+  )
+
+  const handleTodoDelete = useCallback(
+    (id) => {
+      deleteTodoApi(id)
+        .then(() => {
+          dispatch({ type: "DELETE", id })
+        })
+        .catch((err) => {
+          console.log("주 에러 : ", err)
+        })
+    },
+    [list]
+  )
 
   const onInputChange = useCallback((e) => {
-    setContent({ ...content, todo: e.target.value });
-  }, []);
+    setContent({ ...content, todo: e.target.value })
+  }, [])
 
   const onCheckClick = () => {
-    setContent({ ...content, isCompleted: !list.isCompleted });
-    handleTodoUpdate({ ...content, isCompleted: !list.isCompleted });
-  };
+    setContent({ ...content, isCompleted: !list.isCompleted })
+    handleTodoUpdate({ ...content, isCompleted: !list.isCompleted })
+  }
 
   const handleCompleteBtnClick = () => {
     if (!content.todo) {
-      notice("error", "할 일을 입력해 주세요");
-      return;
+      notice("error", "할 일을 입력해 주세요")
+      return
     }
-    handleTodoUpdate(content);
-    setModifyTogle(false);
-  };
+    handleTodoUpdate(content)
+    setModifyTogle(false)
+  }
 
   const handleCancelBtnClick = () => {
-    setContent({ ...content, todo: list.todo });
-    setModifyTogle(false);
-  };
+    setContent({ ...content, todo: list.todo })
+    setModifyTogle(false)
+  }
 
   return (
     <div css={todoListContainer}>
@@ -43,12 +73,7 @@ const TodoItem = ({ list, handleTodoUpdate, handleTodoDelete }) => {
               visibility: hidden;
             `}
           ></div>
-          <input
-            defaultValue={list.todo}
-            autoFocus
-            css={inputCss}
-            onChange={onInputChange}
-          />
+          <input defaultValue={list.todo} autoFocus css={inputCss} onChange={onInputChange} />
           <button onClick={handleCompleteBtnClick} css={customButton}>
             완료
           </button>
@@ -61,9 +86,7 @@ const TodoItem = ({ list, handleTodoUpdate, handleTodoDelete }) => {
           <div
             css={css`
               ${CheckCircle}
-              border : ${list.isCompleted
-                ? ` 1px solid ${COLOR.White100}`
-                : ""};
+              border : ${list.isCompleted ? ` 1px solid ${COLOR.White100}` : ""};
               color: ${list.isCompleted ? `${COLOR.White100}` : ""};
             `}
             onClick={(e) => onCheckClick(e)}
@@ -85,7 +108,7 @@ const TodoItem = ({ list, handleTodoUpdate, handleTodoDelete }) => {
           <button
             css={basicButton}
             onClick={() => {
-              handleTodoDelete(content.id);
+              handleTodoDelete(content.id)
             }}
           >
             삭제
@@ -94,14 +117,14 @@ const TodoItem = ({ list, handleTodoUpdate, handleTodoDelete }) => {
       )}
       <ToastContainer position="top-right" />
     </div>
-  );
-};
+  )
+}
 
 const todoListContainer = css`
   display: flex;
   justify-content: center;
   margin: 10px auto;
-`;
+`
 
 const inputCss = css`
   width: 36%;
@@ -114,7 +137,7 @@ const inputCss = css`
   outline: none;
   border-radius: 5px;
   word-break: break-all;
-`;
+`
 
 const basicButton = css`
   color: ${COLOR.White100};
@@ -129,12 +152,12 @@ const basicButton = css`
   margin-right: 5px;
   white-space: pre-line;
   text-align: center;
-`;
+`
 
 const customButton = css`
   ${basicButton}
   background-color: ${COLOR.Purple100};
-`;
+`
 
 const CheckCircle = css`
   width: 22px;
@@ -148,6 +171,6 @@ const CheckCircle = css`
   margin-right: 10px;
   margin-top: 7px;
   cursor: pointer;
-`;
+`
 
-export default memo(TodoItem);
+export default memo(TodoItem)
