@@ -1,25 +1,19 @@
 const todoReducer = (state, action) => {
   switch (action.type) {
-    case "INIT":
-      return [...action.initTodos]
-    case "ADD":
-      return [
-        ...state,
-        {
-          id: action.id,
-          todo: action.todo,
-          isCompleted: false,
-          userId: action.userId,
-        },
-      ]
+    case 'INIT':
+      return [...action.initTodos];
+    case 'ADD':
+      return [...state, action.todo];
 
-    case "DELETE":
-      return state.filter((task) => task.id !== action.id)
-    case "EDIT":
-      return state.map((task) => (task.id === action.todo.id ? { ...action.todo } : task))
+    case 'DELETE':
+      return state.filter(task => task.id !== action.id);
+    case 'EDIT':
+      return state.map(task =>
+        task.id === action.todo.id ? { ...action.todo } : task
+      );
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default todoReducer
+export default todoReducer;

@@ -1,19 +1,19 @@
 /** @jsxImportSource @emotion/react */
-import { useRef } from "react"
+import { useContext, useRef } from "react"
 import { css } from "@emotion/react"
 import { createTodoApi } from "../../api/todo"
 import { COLOR } from "../../shared/style"
+import { dispatchContext } from "../../context/TodoContext"
 
-const TodoCreate = ({ todoData, setTodoData }) => {
+const TodoCreate = () => {
   const inputRef = useRef()
-
+  const dipatch = useContext(dispatchContext)
   const handleCreatedTodo = (e) => {
     e.preventDefault()
     if (!inputRef.current.value) return
     createTodoApi(inputRef.current.value)
       .then((res) => {
-        // inputRef.current.value = "";
-        // setTodoData([...todoData, res.data]);
+        dipatch({ type: "ADD", todo: res.data })
       })
       .catch((err) => {
         console.log(err)

@@ -20,13 +20,13 @@ const Todo = () => {
   }, [])
 
   return (
-    <div css={mainContainer}>
+    <main css={mainContainer}>
       <TodoHeader />
       <TodoContextWrapper>
         <TodoCreate />
         <TodoList />
       </TodoContextWrapper>
-    </div>
+    </main>
   )
 }
 

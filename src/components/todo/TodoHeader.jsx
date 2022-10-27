@@ -1,26 +1,26 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
-import { useNavigate } from "react-router";
-import { COLOR } from "../../shared/style";
+import { css } from "@emotion/react"
+import { useNavigate } from "react-router"
+import { COLOR } from "../../shared/style"
 
 const TodoHeader = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
-    <div css={labelCss}>
+    <header css={labelCss}>
       <label> Todo List</label>
       <button
         css={logoutBtnCss}
         onClick={() => {
-          localStorage.removeItem("access_token");
-          navigate("/");
+          localStorage.removeItem("access_token")
+          navigate("/")
         }}
       >
         로그아웃
       </button>
-    </div>
-  );
-};
+    </header>
+  )
+}
 const labelCss = css`
   color: ${COLOR.White100};
   font-size: 2.3em;
@@ -28,7 +28,7 @@ const labelCss = css`
   display: flex;
   margin: 30px 35px;
   font-weight: bold;
-`;
+`
 
 const logoutBtnCss = css`
   background-color: ${COLOR.White200};
@@ -38,6 +38,6 @@ const logoutBtnCss = css`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-`;
+`
 
-export default TodoHeader;
+export default TodoHeader
