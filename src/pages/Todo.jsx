@@ -8,9 +8,7 @@ import TodoList from "../component/todo/TodoList"
 import { mainContainer } from "../shared/globalStyle"
 
 const Todo = () => {
-  let navigate = useNavigate()
-  debugger
-  var foo = "foo"
+  const navigate = useNavigate()
   const [todoData, setTodoData] = useState()
 
   useEffect(() => {
